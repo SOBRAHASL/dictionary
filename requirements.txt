@@ -4,5 +4,3 @@ Flask-Session
 gunicorn
 psycopg2
 requests
-re
-os
