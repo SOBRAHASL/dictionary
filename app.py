@@ -13,6 +13,7 @@ from helpers import lookup, load, suggest, accent
 from cs50 import SQL
 from werkzeug.security import check_password_hash, generate_password_hash
 from flask_session import Session
+import os
 
 # Configure application
 app = Flask(__name__)
@@ -21,7 +22,10 @@ app = Flask(__name__)
 app.config["TEMPLATES_AUTO_RELOAD"] = True
 
 # Configure CS50 Library to use SQLite database
-db = SQL("sqlite:///dictionary.db")
+uri = os.getenv("DATABASE_URL")
+if uri.startswith("postgres://"):
+    uri = uri.replace("postgres://", "postgresql://")
+db = SQL(uri)
 
 # Custom filter
 app.jinja_env.filters["accent"] = accent
