@@ -1,0 +1,79 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Dictionary | {{ word }}
+{% endblock %}
+
+{% block main %}
+    {% for q in meaning %}
+        <article>
+            <h2 class="center">{{ q["word"] }}</h2>
+            <section>
+                <h3>Pronunciation</h3>
+                {% for w in q["phonetics"] %}
+                    <p>
+                        {{ w['audio'] | accent }} english phonetic: {{ w["text"] }}
+                        <span class="accent {{ w['audio'] | accent }}"><audio src="{{ w['audio'] }}" preload="none">Your browser doesn't support audio</audio></span>
+                    </p>
+                {% endfor %}
+            </section>
+            {% if q["origin"] %}
+                <section>
+                    <h3>Origin</h3>
+                    <p>{{ q["origin"] }}</p>
+                </section>
+            {% endif %}
+            {% for w in q["meanings"] %}
+                <section>
+                    <h3>{{ w["partOfSpeech"] }}</h3>
+                    <ol>
+                        {% for e in w["definitions"] %}
+                            <li>{{ e["definition"] }}</li>
+                            {% if e["example"] %}
+                                <p><span class="example">Example</span> {{ e["example"] }}</p>
+                            {% elif e["synonyms"] %}
+                                <div>
+                                    {% for r in e["synonyms"] %}
+                                        <span class="synonyms">{{ r }}</span>
+                                    {% endfor %}
+                                </div>
+                            {% elif e["antonyms"] %}
+                                <div>
+                                    {% for r in e["antonyms"] %}
+                                        <span class="antonyms">{{ r }}</span>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </ol>
+                    {% if w["synonyms"] %}
+                        <section>
+                            <h4>Synonyms</h4>
+                            {% for e in w["synonyms"] %}
+                                <span class="synonyms">{{ e }}</span>
+                            {% endfor %}
+                        </section>
+                    {% elif w["antonyms"] %}
+                        <section>
+                            <h4>antonyms</h4>
+                            {% for e in w["antonyms"] %}
+                                <span class="antonyms">{{ e }}</span>
+                            {% endfor %}
+                        </section>
+                    {% endif %}
+                </section>
+            {% endfor %}
+        </article>  
+    {% endfor %}
+{% endblock %}
+{% block script %}
+    window.addEventListener("DOMContentLoaded", function() {
+        let spans = document.querySelectorAll(".accent");
+        let audios = document.querySelectorAll("audio");
+        for (let i = 0; i < spans.length; i++) {
+            spans[i].addEventListener("click", function() {
+                audios[i].play();
+            });
+        };
+    });
+{% endblock %}

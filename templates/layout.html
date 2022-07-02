@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %}</title>
+    <link href="../static/styles.css" rel="stylesheet">
+    <base target="_self">
+    <meta http-equiv="refresh" content="1000">
+</head>
+
+<body>
+    <nav>
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/history">History</a></li>
+            {% if not session["user_id"] %}
+                <li><a href="/login">Login</a></li>
+                <li><a href="/register">Register</a></li>
+            {% else %}
+                <li><a href="/logout">Logout</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+    <header>
+        <form action="/search" method="get">
+            <input type="search" placeholder="Type your word ..." name="word" required autofocus autocomplete="off" id="search">
+            <button type="submit">Search</button>
+        </form>
+        <section>
+            <ul id="suggestion"></ul>
+        </section>
+    </header>
+    <main>
+        {% block main %}{% endblock %}
+    </main>
+    <footer class="center">
+        <p>Written by <span class="footer"><a href="mailto:sobhanrahimiasl@outlook.com">Sobhan Rahimi</a></span></p>
+    </footer>
+    <script>
+        let input = document.querySelector('#search');
+        input.addEventListener('input', async function() {
+            let response = await fetch('/suggestion?word=' + input.value);
+            let suggestions = await response.json();
+            let html = '';
+            for (let row in suggestions) {
+                let x = suggestions[row]
+                html += '<li><a href="/search?word=' + x + '">' + x + '</a></li>';
+            }
+            document.querySelector('#suggestion').innerHTML = html;
+        });
+        {% block script %}{% endblock %}
+    </script>
+</body>
+
+</html>
