@@ -14,7 +14,7 @@ __*Note:*__ This project was built for [CS50 final project](https://cs50.harvard
 
 [Website Demo](https://dictionarybeta.herokuapp.com)
 
-[Video Demo](https://youtube.com)
+[Video Demo](https://youtu.be/lD3mBB0RMno)
 
 ## *Contents*
 
