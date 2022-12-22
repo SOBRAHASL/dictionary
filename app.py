@@ -1,11 +1,8 @@
 """
-IN THE NAME OF GOD
-
 A dictionary based on free databases and APIs
 The purpose of this project is the creation of a comprehensive dictionary from different sources
 For now, it only uses one source --> https://dictionaryapi.dev/
 """
-
 
 # Import libraries
 from flask import Flask, redirect, render_template, request, jsonify, session
